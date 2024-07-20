@@ -24,7 +24,6 @@ export class FormsPageComponent implements OnInit, OnDestroy {
     this.mainForm = this.fb.group({
       forms: this.formArray
     }, {updateOn: "change"})
-
   }
 
   ngOnInit(): void {
@@ -41,7 +40,7 @@ export class FormsPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions?.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   createForm(): FormGroup {
@@ -79,7 +78,7 @@ export class FormsPageComponent implements OnInit, OnDestroy {
       () => console.log('error'),
       () => this.finalizeSubmission()
     );
-    this.subscriptions?.push(timerSubscription);
+    this.subscriptions.push(timerSubscription);
   }
 
   finalizeSubmission(): void {
@@ -93,7 +92,7 @@ export class FormsPageComponent implements OnInit, OnDestroy {
 
   cancelSubmission() {
     this.submissionInProgress = false;
-    this.timer = 0;
+    this.timer = 5;
   }
 
   resetForms(): void {
@@ -104,7 +103,6 @@ export class FormsPageComponent implements OnInit, OnDestroy {
   updateInvalidFormsCount(): void {
     this.invalidFormsCount = this.formArray.controls.filter((form: { invalid: any; }) => form.invalid).length;
     setTimeout(() => this.cdr.detectChanges(), 0);
-
   }
 
   submitToBackend() {
