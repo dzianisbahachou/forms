@@ -1,0 +1,53 @@
+<form class="d-flex justify-content-between mt-3 g-3" [formGroup]="formGroup">
+  <div class="card ">
+    <div class="card-header d-flex justify-content-between ">
+      Form {{index}}
+      <button type="button" class="btn-close" aria-label="Close" (click)="removeF()"></button>
+    </div>
+    <div class="card-body">
+
+
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="country"
+          placeholder="Country"
+          [appValidation]="formGroup.get('country')"
+          validationType="Country"
+          formControlName="country"
+          list="countryList">
+        <datalist id="countryList">
+          <option *ngFor="let country of countries" [value]="country"></option>
+        </datalist>
+        <label for="country">Country</label>
+      </div>
+
+
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          placeholder="Username"
+          [appValidation]="formGroup.get('username')"
+          validationType="Username"
+          formControlName="username">
+        <label for="username">Username</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input
+          type="date"
+          class="form-control"
+          id="birthday"
+          placeholder="Birthday"
+          [appValidation]="formGroup.get('birthday')"
+          validationType="Birthday"
+          formControlName="birthday">
+        <label for="birthday">Birthday</label>
+      </div>
+
+    </div>
+  </div>
+</form>

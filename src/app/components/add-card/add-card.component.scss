@@ -1,0 +1,15 @@
+.add-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 235px; /* Ensure the blocks have a minimum width */
+  height: 333px; /* Minimum height to ensure visibility */
+  border: 2px dotted #000;
+  border-radius: calc(var(--bs-border-radius) - (var(--bs-border-width)));
+  background: #f8f9fa; /* Light background color to match card */
+}
+
+.plus-sign {
+  font-size: 48px;
+  color: #007bff; /* Bootstrap primary color */
+}
