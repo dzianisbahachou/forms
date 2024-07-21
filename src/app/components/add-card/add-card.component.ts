@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-add-card',
@@ -8,7 +9,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 export class AddCardComponent {
 
   @Input() disabled: boolean = false;
-  @Output() addForm = new EventEmitter();
+  @Output() addForm: EventEmitter<FormGroup> = new EventEmitter();
 
   addNewForm() {
     this.addForm.emit();

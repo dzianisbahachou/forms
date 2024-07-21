@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BehaviorSubject, interval, scan, Subject, Subscription, take, takeWhile, timer} from "rxjs";
+import {interval, scan, Subscription, takeWhile} from "rxjs";
 
 @Component({
   selector: 'app-progress-bar',
@@ -8,8 +8,7 @@ import {BehaviorSubject, interval, scan, Subject, Subscription, take, takeWhile,
 })
 export class ProgressBarComponent implements OnInit, OnDestroy {
   progressValue: number = 0;
-
-  subscription?: Subscription;
+  subscription!: Subscription;
 
   ngOnInit() {
     this.subscription = interval(250)
@@ -19,12 +18,12 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
         }, 0),
         takeWhile(()=> this.progressValue <= 100)
       )
-      .subscribe(data => {
-        this.progressValue = data
+      .subscribe((data: number) => {
+        this.progressValue = data;
       })
   }
 
   ngOnDestroy() {
-    this.subscription?.unsubscribe();
+    this.subscription.unsubscribe();
   }
 }

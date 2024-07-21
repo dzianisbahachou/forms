@@ -2,14 +2,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 235px; /* Ensure the blocks have a minimum width */
-  height: 297px; /* Minimum height to ensure visibility */
+  width: 235px;
+  height: 297px;
   border: 2px dotted #000;
   border-radius: calc(var(--bs-border-radius) - (var(--bs-border-width)));
-  background: #f8f9fa; /* Light background color to match card */
+  background: #f8f9fa;
 }
 
 .plus-sign {
-  font-size: 48px;
-  color: #007bff; /* Bootstrap primary color */
+  font-size: 68px;
+  color: #007bff;
 }

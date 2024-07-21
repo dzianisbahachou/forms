@@ -2,7 +2,7 @@
   <div class="card ">
     <div class="card-header d-flex justify-content-between ">
       Form {{index}}
-      <button type="button" class="btn-close" aria-label="Close" (click)="removeF()"></button>
+      <button type="button" class="btn-close" aria-label="Close" (click)="removeForm()"></button>
     </div>
     <div class="card-body">
       <div class="form-floating mb-3">
@@ -20,8 +20,9 @@
         </datalist>
         <label for="country">Country</label>
       </div>
-
-
+<!--      As option there is the opportunity to have only one reuse input-->
+<!--      and pass the parameter inside it-->
+<!--      then by using *ngFor render it-->
       <div class="form-floating mb-3">
         <input
           type="text"
@@ -33,7 +34,6 @@
           formControlName="username">
         <label for="username">Username</label>
       </div>
-
       <div class="form-floating mb-3">
         <input
           type="date"
@@ -45,7 +45,6 @@
           formControlName="birthday">
         <label for="birthday">Birthday</label>
       </div>
-
     </div>
   </div>
 </form>

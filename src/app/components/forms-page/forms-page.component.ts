@@ -1,37 +1,55 @@
-import { ChangeDetectorRef, Component, inject, NgZone, OnDestroy, OnInit} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
-import {interval, Subscription, take} from "rxjs";
-import {SubmitFormService} from "../../shared/services/submit-form.service";
+import {ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {Subscription} from "rxjs";
 import {SubmitFormResponseData} from "../../shared/interface/responses";
+import {animate, style, transition, trigger} from "@angular/animations";
+import {TimerService} from "../../shared/services/timer.service";
+import {SubmitFormService} from "../../shared/services/submit-form.service";
+import {SuccessSubmittingFormMessageComponent} from "../../shared/components/success-submitting-form-message/success-submitting-form-message.component";
 
 @Component({
   selector: 'app-forms-page',
   templateUrl: './forms-page.component.html',
-  styleUrl: './forms-page.component.scss'
+  styleUrl: './forms-page.component.scss',
+  animations: [
+    trigger('cardAnimation', [
+      transition(':enter', [
+        style({opacity: 0, transform: 'translateY(-10px)'}),
+        animate('300ms ease-out', style({opacity: 1, transform: 'translateY(0)'})),
+      ]),
+      // For :leave event I set 0ms time because when the form submitted then on the UI we can see
+      // the card disappearing animation (including resetting the validation) and new card appearing.
+      // You can test it by setting 300ms for :leave event
+      transition(':leave', [
+        animate('0ms ease-out', style({opacity: 0, transform: 'translateY(-10px)'})),
+      ]),
+    ])
+  ]
 })
 export class FormsPageComponent implements OnInit, OnDestroy {
-  formArray!: any;
+
+  @ViewChild(SuccessSubmittingFormMessageComponent) successSubmittingFormMessageComponent!: SuccessSubmittingFormMessageComponent;
+
+  formArray: FormArray<FormGroup>;
   mainForm!: FormGroup;
   maxForms: number = 10;
   submissionInProgress: boolean = false;
   timer: number = 0;
 
   isInvalidFormsVisible: boolean = false;
-
-
   invalidFormsCountControl: FormControl = new FormControl(0);
 
   subscriptions: Subscription[] = [];
   subscriptionNames: string[] = [];
 
-  private fb: FormBuilder = inject(FormBuilder);
-
   constructor(
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
-    private submitFormService: SubmitFormService
+    private timerService: TimerService,
+    private submitFormService: SubmitFormService,
+    private fb: FormBuilder
   ) {
-    this.formArray = this.fb.array([]);
+    this.formArray = this.fb.array<FormGroup>([]);
     this.mainForm = this.fb.group({
       forms: this.formArray
     }, {updateOn: "change"})
@@ -52,12 +70,12 @@ export class FormsPageComponent implements OnInit, OnDestroy {
       }));
         this.zone.run(() => {
           this.cdr.detectChanges();
-        })
-    })
+        });
+    });
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 
   createForm(): FormGroup {
@@ -71,29 +89,24 @@ export class FormsPageComponent implements OnInit, OnDestroy {
       }
       this.zone.run(() => {
         this.cdr.detectChanges();
-      })
-    })
+      });
+    });
   }
 
   removeForm(formId: number): void {
-    this.formArray.removeAt(formId)
+    this.formArray.removeAt(formId);
   }
 
   submitForms(): void {
     if (this.mainForm.valid) {
       this.submissionInProgress = true;
-      this.startTimer()
+      this.startTimer();
     }
   }
 
   startTimer(): void {
-    this.timer = 5
-    const timerSubmission$ = interval(1000)
-      .pipe(
-        take(this.timer)
-      );
-
-    this.addSubscription('timer', timerSubmission$.subscribe(
+    this.timer = 5;
+    this.addSubscription('timer', this.timerService.startTimer().subscribe(
       () => this.timer -= 1,
       () => console.log('error'),
       () => this.finalizeSubmission()
@@ -101,7 +114,7 @@ export class FormsPageComponent implements OnInit, OnDestroy {
   }
 
   unsubscribeByName(name: string): void {
-    const index = this.subscriptionNames.indexOf(name);
+    const index: number = this.subscriptionNames.indexOf(name);
     if (index !== -1) {
       this.subscriptions[index].unsubscribe();
       this.subscriptions.splice(index, 1);
@@ -117,7 +130,7 @@ export class FormsPageComponent implements OnInit, OnDestroy {
 
   cancelSubmission(): void {
     this.submissionInProgress = false;
-    this.unsubscribeByName('timer')
+    this.unsubscribeByName('timer');
   }
 
   resetForms(): void {
@@ -126,16 +139,16 @@ export class FormsPageComponent implements OnInit, OnDestroy {
   }
 
   updateInvalidFormsCount(): void {
-    const invalidForms =  this.formArray.controls.filter((form: { invalid: boolean; }) => form.invalid).length;
+    const invalidForms: number =  this.formArray.controls.filter((form: { invalid: boolean; }) => form.invalid).length;
     this.invalidFormsCountControl.setValue(invalidForms);
-
     setTimeout(() => this.cdr.detectChanges(), 0);
   }
 
   checkFormComplete(): void {
-    const formArrayTouchedOrDirty = this.formArray.controls.some((control: any) => control.dirty || control.touched);
-    const hasInvalidForms = this.invalidFormsCountControl.value > 0;
-    this.isInvalidFormsVisible = formArrayTouchedOrDirty && hasInvalidForms;  }
+    const formArrayTouchedOrDirty: boolean = this.formArray.controls.some((control: any) => control.dirty || control.touched);
+    const hasInvalidForms: boolean = this.invalidFormsCountControl.value > 0;
+    this.isInvalidFormsVisible = formArrayTouchedOrDirty && hasInvalidForms;
+  }
 
   submitToBackend(): void {
     this.submitFormService.submitForm(this.mainForm).subscribe(
@@ -148,19 +161,18 @@ export class FormsPageComponent implements OnInit, OnDestroy {
           console.log('Submitting forms to backend:', this.mainForm.value.forms);
           this.mainForm.reset();
           this.resetForms();
-
-
           this.submissionInProgress = false;
           this.isInvalidFormsVisible = false;
           this.invalidFormsCountControl.setValue(0);
           this.timer = 5;
+          this.successSubmittingFormMessageComponent.showMessage();
         }
       },
       // in mock backend there are not any error handler, so I just stayed console.log(error)
       // in case some backend error handling I would add the handler that represent the error
       error => {
-        console.log(error)
-      },
-      )
+        console.log(error);
+      }
+    )
   }
 }

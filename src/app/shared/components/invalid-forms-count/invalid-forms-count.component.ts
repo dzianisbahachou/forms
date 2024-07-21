@@ -1,6 +1,5 @@
 import {Component, forwardRef, Input} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {count} from "rxjs";
 
 @Component({
   selector: 'app-invalid-forms-count',
@@ -17,20 +16,13 @@ import {count} from "rxjs";
 export class InvalidFormsCountComponent implements ControlValueAccessor{
   @Input() count: number = 0;
 
-  private onChange: any = () => {};
-  private onTouched: any = () => {};
-
-  writeValue(count: any): void {
+  writeValue(count: number): void {
       this.count = count;
   }
-  registerOnChange(fn: any): void {
-      this.onChange = fn;
-  }
-  registerOnTouched(fn: any): void {
-      this.onTouched = fn;
-  }
-  setDisabledState?(isDisabled: boolean): void {
 
-  }
+  registerOnChange() {}
 
+  registerOnTouched() {}
+
+  setDisabledState() {}
 }
