@@ -1,15 +1,9 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {Country} from "../../shared/enums/country";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {CountryValidator} from "../../shared/Validators/country.validator";
-import {BirthdayValidator} from "../../shared/Validators/birthday.validator";
-import {UsernameAsyncValidator} from "../../shared/Validators/username.validator";
+import {CountryValidator} from "../../shared/validators/country.validator";
+import {BirthdayValidator} from "../../shared/validators/birthday.validator";
+import {UsernameAsyncValidator} from "../../shared/validators/username.validator";
 import {UsernameValidationService} from "../../shared/services/check-user-name.service";
 
 @Component({

@@ -15,6 +15,8 @@ import { AddCardComponent } from './components/add-card/add-card.component';
 import {ProgressBarComponent} from "./shared/components/progress-bar/progress-bar.component";
 import {ValidationDirective} from "./shared/directives/validation.directive";
 import {MockBackendInterceptor} from "./shared/mock-backend/mock-backend.interceptor";
+import { InvalidFormsCountComponent } from './shared/components/invalid-forms-count/invalid-forms-count.component';
+import { TimerPipe } from './shared/pipes/timer.pipe';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import {MockBackendInterceptor} from "./shared/mock-backend/mock-backend.interce
     FormsPageComponent,
     AddCardComponent,
     ProgressBarComponent,
-    ValidationDirective
+    ValidationDirective,
+    InvalidFormsCountComponent,
+    TimerPipe,
   ],
   imports: [
     BrowserModule,

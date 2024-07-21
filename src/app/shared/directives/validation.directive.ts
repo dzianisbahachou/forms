@@ -30,8 +30,8 @@ export class ValidationDirective implements OnInit, OnDestroy {
         if (status === 'INVALID') {
           this.showErrorMessage();
           this.isInvalid = true
-
-        } else {
+        }
+        else if (status === "VALID") {
           this.hideErrorMessage();
           this.isInvalid = false
         }
@@ -63,6 +63,7 @@ export class ValidationDirective implements OnInit, OnDestroy {
     if (this.el.nativeElement.tagName !== 'DIV') {
       this.renderer.removeClass(this.el.nativeElement, 'is-invalid');
     }
+    this.hideErrorTooltip()
   }
 
   private showErrorTooltip() {

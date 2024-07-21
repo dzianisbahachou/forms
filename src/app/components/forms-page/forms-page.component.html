@@ -3,18 +3,19 @@
   <div class="d-flex align-items-center">
     <button
       class="btn btn-primary me-2"
+      [ngStyle]="{display: submissionInProgress ? 'none': 'block'}"
       (click)="submitForms()"
-      [disabled]="formArray.length == 0 || submissionInProgress || invalidFormsCount > 0 || (formArray.length == 1 && mainForm.invalid)">
-      Submit All Forms
+      [disabled]="mainForm.invalid || mainForm.status == 'PENDING' ||  formArray.length == 0 || submissionInProgress || isInvalidFormsVisible || (formArray.length == 1 && mainForm.invalid)">
+      Submit all forms
     </button>
-    <span *ngIf="invalidFormsCount > 0 && !mainForm.untouched" class="text-danger">
-      Invalid forms: {{ invalidFormsCount }}
-    </span>
+    <div *ngIf="isInvalidFormsVisible">
+      <app-invalid-forms-count [formControl]="invalidFormsCountControl"></app-invalid-forms-count>
+    </div>
   </div>
   <div *ngIf="submissionInProgress" class="mt-3 d-flex align-items-center">
+    <button class="btn btn-danger" (click)="cancelSubmission()">Cancel</button>
     <app-progress-bar></app-progress-bar>
-    <span>{{ timer }} {{timer > 1 ? 'seconds' : 'second'}}</span>
-    <button class="btn btn-warning" (click)="cancelSubmission()">Cancel</button>
+    <span>{{ timer| timer }} {{timer > 1 ? 'seconds' : 'second'}}</span>
   </div>
 
   <div class="mt-4">

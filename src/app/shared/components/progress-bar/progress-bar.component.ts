@@ -9,7 +9,7 @@ import {BehaviorSubject, interval, scan, Subject, Subscription, take, takeWhile,
 export class ProgressBarComponent implements OnInit, OnDestroy {
   progressValue: number = 0;
 
-  subscription: Subscription = new Subscription();
+  subscription?: Subscription;
 
   ngOnInit() {
     this.subscription = interval(250)
@@ -25,6 +25,6 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscription?.unsubscribe();
   }
 }
