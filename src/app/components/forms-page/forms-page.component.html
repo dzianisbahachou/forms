@@ -1,0 +1,39 @@
+<div class="container mt-5">
+  <div class="d-flex align-items-center">
+<!--    There are several proper approaches to handle 'Submit' button:-->
+<!--    1) Handle form on each keystroke (as I implemented based on test task requirement)-->
+<!--    2) Allow user to click on 'Submit' button but if the form is invalid then show all invalid fields and tooltips-->
+<!--    and disabled button while all error will be fixed-->
+<!--    There are two main approaches and if it's needed I will implement the second one -->
+    <button
+      class="btn btn-primary"
+      [ngStyle]="{display: submissionInProgress ? 'none': 'block'}"
+      (click)="submitForms()"
+      [disabled]="mainForm.invalid || mainForm.status == 'PENDING' ||  formArray.length == 0 || submissionInProgress || isInvalidFormsVisible || (formArray.length == 1 && mainForm.invalid)">
+      Submit all forms
+    </button>
+    <div *ngIf="isInvalidFormsVisible">
+      <app-invalid-forms-count [formControl]="invalidFormsCountControl"></app-invalid-forms-count>
+    </div>
+  </div>
+  <div *ngIf="submissionInProgress" class="mt-3 d-flex align-items-center">
+    <button class="btn btn-danger me-4" (click)="cancelSubmission()">Cancel</button>
+    <app-progress-bar></app-progress-bar>
+    <span class="ms-2">{{ timer| timer }}</span>
+  </div>
+  <div class="mt-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="grid-container gap-3" [ngStyle]="{pointerEvents: submissionInProgress ? 'none' : 'all'}">
+          <div *ngFor="let formGroup of formArray.controls; let id = index" [@cardAnimation]>
+            <app-form-card [formGroup]="formGroup" [index]="id + 1" (remove)="removeForm(id)"></app-form-card>
+          </div>
+          <div class="add-card" [ngStyle]="{display: formArray.length == 10 ? 'none': 'block'}" [@cardAnimation]>
+            <app-add-card [disabled]="submissionInProgress || formArray.length >= 10" (addForm)="addForm()" ></app-add-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-success-submitting-form-message></app-success-submitting-form-message>
+</div>
