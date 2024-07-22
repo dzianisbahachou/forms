@@ -8,6 +8,6 @@ export class TimerPipe implements PipeTransform {
   transform(value: number): string {
     const minutes: number = Math.floor(value / 60);
     const seconds: number = value % 60;
-    return `${minutes}:${seconds < 10 ? `0${seconds}` : `0${seconds}`}`;
+    return `${minutes}:${seconds < 10 ? `0${seconds}` : `${seconds}`}`;
   }
 }

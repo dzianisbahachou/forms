@@ -1,15 +1,16 @@
+@import "../../../styles/colors";
+
+// Firstly I set the height refer to Card block height but due to dynamic data
+// when the Add Block move to the next row then the height stands small
+// so I have to set a min-height to follow the same sizes
 .add-block {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 235px;
-  height: 297px;
+  min-width: 235px;
+  min-height: 297px;
   border: 2px dotted #000;
-  border-radius: calc(var(--bs-border-radius) - (var(--bs-border-width)));
-  background: #f8f9fa;
+  background: $backgroundBlue;
 }
 
 .plus-sign {
   font-size: 68px;
-  color: #007bff;
+  color: $buttonBlue;
 }

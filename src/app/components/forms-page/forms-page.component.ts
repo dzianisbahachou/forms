@@ -62,8 +62,8 @@ export class FormsPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.addForm();
+    // used NgZone to get rid of ExpressionChangedAfterItHasBeenCheckedError error
     this.zone.runOutsideAngular(() => {
-
       this.addSubscription('mainFormChanges', this.mainForm.statusChanges.subscribe((status) => {
         this.updateInvalidFormsCount();
         this.checkFormComplete();

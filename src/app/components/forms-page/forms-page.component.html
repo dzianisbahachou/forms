@@ -1,5 +1,10 @@
 <div class="container mt-5">
   <div class="d-flex align-items-center">
+<!--    There are several proper approaches to handle 'Submit' button:-->
+<!--    1) Handle form on each keystroke (as I implemented based on test task requirement)-->
+<!--    2) Allow user to click on 'Submit' button but if the form is invalid then show all invalid fields and tooltips-->
+<!--    and disabled button while all error will be fixed-->
+<!--    There are two main approaches and if it's needed I will implement the second one -->
     <button
       class="btn btn-primary"
       [ngStyle]="{display: submissionInProgress ? 'none': 'block'}"
@@ -14,7 +19,7 @@
   <div *ngIf="submissionInProgress" class="mt-3 d-flex align-items-center">
     <button class="btn btn-danger me-4" (click)="cancelSubmission()">Cancel</button>
     <app-progress-bar></app-progress-bar>
-    <span class="ms-2">{{ timer| timer }} {{timer > 1 ? 'seconds' : 'second'}}</span>
+    <span class="ms-2">{{ timer| timer }}</span>
   </div>
   <div class="mt-4">
     <div class="row">
